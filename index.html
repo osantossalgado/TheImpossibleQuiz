@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Impossible Quiz - Secure Player</title>
+    <title>The Impossible Quiz - Secure Educational Edition</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Ruffle SWF Emulator CDN -->
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <!-- Local Ruffle SWF Emulator (Host ruffle.js in your repo root) -->
+    <script src="ruffle.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom scrollbar and styling for emulator wrapper */
         #ruffle-container {
             width: 100%;
             height: 100%;
@@ -43,7 +42,7 @@
                     <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
                         The Impossible Quiz
                     </h1>
-                    <p class="text-xs text-slate-400">Ad-Free Secure Classroom Edition</p>
+                    <p class="text-xs text-slate-400">Steam School &bull; Logic & Critical Thinking Module</p>
                 </div>
             </div>
             <div class="flex items-center space-x-3">
@@ -60,8 +59,8 @@
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center items-center">
         <!-- Notification / Status Banner -->
         <div id="status-banner" class="w-full max-w-3xl mb-4 bg-indigo-950/60 border border-indigo-500/30 text-indigo-200 px-4 py-3 rounded-xl text-sm flex items-center justify-between shadow-sm">
-            <span id="status-text">Loading emulator and checking for SWF file...</span>
-            <span class="text-xs font-mono bg-indigo-900/80 px-2 py-1 rounded border border-indigo-700/50 text-indigo-300">Ruffle Engine</span>
+            <span id="status-text">Loading local Ruffle engine and checking for SWF file...</span>
+            <span class="text-xs font-mono bg-indigo-900/80 px-2 py-1 rounded border border-indigo-700/50 text-indigo-300">Self-Hosted Ruffle</span>
         </div>
 
         <!-- Game Player Wrapper Card -->
@@ -74,7 +73,7 @@
                 </svg>
                 <h3 class="text-lg font-bold text-white mb-2">SWF File Not Detected Automatically</h3>
                 <p class="text-sm text-slate-300 mb-6">
-                    Place your downloaded <code class="bg-slate-900 px-2 py-0.5 rounded text-indigo-300">the-impossible-quiz.swf</code> file in the same GitHub repository folder, or select it locally below to play right now:
+                    Place your downloaded <code class="bg-slate-900 px-2 py-0.5 rounded text-indigo-300">the-impossible-quiz.swf</code> file in your repository folder, or select it locally below:
                 </p>
                 <label class="cursor-pointer bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-600/30 text-sm">
                     Browse Local SWF File
@@ -89,25 +88,22 @@
         <!-- Instructions Modal / Expandable Card -->
         <div id="instructions-card" class="hidden w-full max-w-3xl mt-6 bg-slate-800/90 border border-slate-700 rounded-xl p-6 text-sm text-slate-300 space-y-3">
             <h4 class="text-white font-bold text-base flex items-center justify-between">
-                <span>📦 How to Deploy on GitHub Pages</span>
+                <span>📦 Offline / Local Ruffle Deployment Guide</span>
                 <button onclick="toggleInstructions()" class="text-slate-400 hover:text-white">&times;</button>
             </h4>
             <ol class="list-decimal list-inside space-y-2 text-slate-300">
-                <li>Create a new repository on GitHub (Public repository recommended).</li>
-                <li>Save this code as <code class="bg-slate-900 px-1.5 py-0.5 rounded text-indigo-300 font-mono">index.html</code> in the main directory.</li>
-                <li>Upload your SWF file to the same repository folder and rename it to <code class="bg-slate-900 px-1.5 py-0.5 rounded text-indigo-300 font-mono">the-impossible-quiz.swf</code> (or update the filename in the script below).</li>
-                <li>Go to your repository <strong>Settings &rarr; Pages</strong>, set the source branch to <code class="bg-slate-900 px-1.5 py-0.5 rounded text-indigo-300 font-mono">main</code> (or root), and save.</li>
-                <li>Share your GitHub Pages link with students! They can play smoothly without ads or distractions.</li>
+                <li>Download self-hosted Ruffle files from <a href="https://ruffle.rs" target="_blank" class="text-indigo-400 underline">ruffle.rs</a> and place <code class="bg-slate-900 px-1.5 py-0.5 rounded text-indigo-300 font-mono">ruffle.js</code> &amp; <code class="bg-slate-900 px-1.5 py-0.5 rounded text-indigo-300 font-mono">core.wasm</code> in your repository root.</li>
+                <li>Upload your Flash file and name it <code class="bg-slate-900 px-1.5 py-0.5 rounded text-indigo-300 font-mono">the-impossible-quiz.swf</code>.</li>
+                <li>Ensure GitHub Pages is active under your repository <strong>Settings &rarr; Pages</strong>.</li>
             </ol>
         </div>
     </main>
 
     <footer class="w-full text-center py-4 text-xs text-slate-500 border-t border-slate-800">
-        Powered by Ruffle Emulator &bull; Designed for secure educational deployment
+        Steam School Logic Module &bull; Powered by Self-Hosted Ruffle
     </footer>
 
     <script>
-        // Configuration: Change this filename if your uploaded SWF has a different name
         const SWF_FILE_NAME = "the-impossible-quiz.swf";
 
         window.addEventListener("DOMContentLoaded", () => {
@@ -119,7 +115,6 @@
             const statusText = document.getElementById("status-text");
             const fallbackDiv = document.getElementById("upload-fallback");
 
-            // Clear previous instances if any
             container.innerHTML = "";
 
             if (window.RufflePlayer) {
@@ -128,11 +123,10 @@
                     let player = ruffle.createPlayer();
                     container.appendChild(player);
 
-                    statusText.textContent = `Attempting to load "${fileUrl}"...`;
+                    statusText.textContent = `Loading "${fileUrl}" via local engine...`;
 
-                    // Attempt to load the SWF file
                     player.load(fileUrl).then(() => {
-                        statusText.textContent = "Game loaded successfully! Enjoy playing.";
+                        statusText.textContent = "Logic challenge active! Ready for students.";
                         fallbackDiv.classList.add("hidden");
                     }).catch((err) => {
                         console.warn("Could not auto-load SWF file:", err);
@@ -142,11 +136,11 @@
                     });
                 } catch (e) {
                     console.error("Ruffle initialization error:", e);
-                    statusText.textContent = "Error initializing Ruffle emulator engine.";
+                    statusText.textContent = "Error initializing local Ruffle engine.";
                     fallbackDiv.classList.remove("hidden");
                 }
             } else {
-                statusText.textContent = "Ruffle library failed to load from CDN.";
+                statusText.textContent = "Local ruffle.js script not found in repository root.";
                 fallbackDiv.classList.remove("hidden");
             }
         }
@@ -171,7 +165,6 @@
                     let player = ruffle.createPlayer();
                     container.appendChild(player);
 
-                    // Load local array buffer data into Ruffle
                     player.load({ data: arrayBuffer }).then(() => {
                         statusText.textContent = `Successfully loaded ${file.name}!`;
                     }).catch(err => {
