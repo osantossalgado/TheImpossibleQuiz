@@ -78,7 +78,7 @@
         
         <!-- Live Status / Notification Banner -->
         <div id="status-banner" class="w-full max-w-3xl mb-4 bg-indigo-950/60 border border-indigo-500/30 text-indigo-200 px-4 py-3 rounded-xl text-sm flex items-center justify-between shadow-sm">
-            <span id="status-text">Initializing local Ruffle engine and fetching SWF...</span>
+            <span id="status-text">Initializing local Ruffle engine and fetching SWF from root...</span>
             <span class="text-xs font-mono bg-indigo-900/80 px-2 py-1 rounded border border-indigo-700/50 text-indigo-300">Self-Hosted Ruffle</span>
         </div>
 
@@ -114,7 +114,18 @@
     <!-- ========================================== -->
     <script>
         /**
-         * Path to the target Flash file relative to the root server path.
-         * Change this string if your .swf file resides in a subfolder.
+         * Dynamically builds an absolute URL pointing strictly to the repository root directory 
+         * where index.html resides (handles GitHub Pages subfolders and local domains automatically).
          */
-        const SWF_FILE_NAME = "./the-impossible-quiz.swf";
+        const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        const SWF_FILE_URL = window.location.origin + basePath + "the-impossible-quiz.swf";
+
+        // Initialize the emulator once the DOM is fully parsed
+        window.addEventListener("DOMContentLoaded", () => {
+            initializeRuffle(SWF_FILE_URL);
+        });
+
+        /**
+         * Instantiates the Ruffle player and loads the requested SWF file from the root folder.
+         * 
+         * @param {string} fileUrl - The explicit root-folder URI
