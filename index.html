@@ -43,6 +43,24 @@
             max-width: 100%;
         }
     </style>
+    
+    <script>
+        // Bulletproof browser-level audio killer for Ruffle Web Audio API
+        const OriginalAudioContext = window.AudioContext || window.webkitAudioContext;
+        if (OriginalAudioContext) {
+            window.AudioContext = window.webkitAudioContext = class extends OriginalAudioContext {
+                createGain() {
+                    const node = super.createGain();
+                    node.gain.value = 0;
+                    Object.defineProperty(node.gain, 'value', {
+                        get: () => 0,
+                        set: () => {}
+                    });
+                    return node;
+                }
+            };
+        }
+    </script>
 </head>
 <body>
 
@@ -75,10 +93,7 @@
             document.getElementById("player-container").appendChild(player);
             
             // Load your SWF file
-            player.load("the-impossible-quiz.swf").then(() => {
-                // Force volume to 0 programmatically to guarantee sound is cut off
-                player.volume = 0;
-            });
+            player.load("the-impossible-quiz.swf");
         });
     </script>
 
