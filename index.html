@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Impossible Quiz</title>
+    <title>STEAM School - Brain Games: Thinking Outside the Box</title>
     <style>
         body, html {
             margin: 0;
@@ -11,20 +11,53 @@
             width: 100%;
             height: 100%;
             background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+            color: #4CAF50;
+        }
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.5;
+        }
+        #player-container {
+            margin: 10px 0 20px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
         }
         #player {
             width: 800px;
             height: 600px;
             max-width: 100%;
-            max-height: 100%;
         }
     </style>
 </head>
 <body>
+
+    <header>
+        <h1>STEAM School: Brain Games & Lateral Thinking</h1>
+        <p>Welcome to our interactive challenge! <strong>The Impossible Quiz</strong> is utilized here as a cognitive exercise in lateral problem-solving. By intentionally subverting traditional logic and demanding creative, non-linear approaches, this activity encourages students to step away from rigid assumptions and practice <em>thinking outside the box</em>—a foundational skill in our STEAM curriculum.</p>
+    </header>
+
+    <div id="player-container">
+        <!-- Ruffle Player will be injected here -->
+    </div>
 
     <!-- Load self-hosted Ruffle from the ruffle folder -->
     <script src="ruffle/ruffle.js"></script>
@@ -35,16 +68,15 @@
             publicPath: "ruffle/", // Points Ruffle to your self-hosted .wasm files
             autoplay: "on",
             unmuteOverlay: "hidden",
-            volume: 0, // Sets the audio volume to 0 (completely muted)
+            volume: 0, // Keeps all audio and sound effects muted
         };
 
         window.addEventListener("DOMContentLoaded", () => {
             let ruffle = window.RufflePlayer.newest();
             let player = ruffle.createPlayer();
             
-            // Style or append the player to the body
             player.id = "player";
-            document.body.appendChild(player);
+            document.getElementById("player-container").appendChild(player);
             
             // Load your SWF file from the root directory
             player.load("the-impossible-quiz.swf");
